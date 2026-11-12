@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampiFi — Admin Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+    <!-- ── Top bar ──────────────────────────────────────────────────────── -->
+    <nav class="ch-topbar">
+        <span class="brand-small">CampiFi</span>
+        <div class="ch-topbar-right">
+            <span class="role-badge admin">Server Admin</span>
+        </div>
+    </nav>
+
+    <!-- ── Admin layout ─────────────────────────────────────────────────── -->
+    <div class="admin-layout">
+
+        <!-- Sidebar navigation -->
+        <aside class="admin-sidebar">
+            <p class="admin-sidebar-title">Admin Panel</p>
+            <nav class="admin-nav">
+                <button class="admin-nav-item active" data-section="networks">Manage Networks</button>
+                <button class="admin-nav-item" data-section="users">User Directory</button>
+            </nav>
+        </aside>
+
+        <!-- Main content -->
+        <section class="admin-content">
+
+            <!-- ── Networks Section ──────────────────────────────────────── -->
+            <div id="section-networks" class="admin-section-content">
+                <div class="admin-section-header">
+                    <h3>Manage Networks</h3>
+                    <button class="btn btn-primary" id="showCreateFormBtn">+ New Network</button>
+                </div>
+
+                <!-- Create form (hidden by default) -->
+                <div id="createNetworkForm" class="admin-form-card" style="display:none;">
+                    <h4 class="admin-form-title">Create Network</h4>
+                    <input type="text" id="networkName" class="field" placeholder="Network name (e.g. CSE Core A)" maxlength="100">
+                    <input type="text" id="networkDesc" class="field" placeholder="Description (optional)" maxlength="500">
+                    <select id="networkType" class="field field-select">
+                        <option value="PUBLIC">Public — Anyone can view (broadcast, read-only)</option>
+                        <option value="PRIVATE">Private — PIN required</option>
+                    </select>
+                    <div id="pinInputRow" style="display:none;">
+                        <input type="text" id="networkPin" class="field" placeholder="4-digit PIN (e.g. 1234)" maxlength="4" inputmode="numeric" pattern="[0-9]{4}">
+                    </div>
+                    <div class="admin-form-actions">
+                        <button class="btn btn-primary" id="createNetworkBtn">Create Network</button>
+                        <button class="btn-ghost" id="cancelCreateBtn">Cancel</button>
+                    </div>
+                    <p class="admin-form-msg" id="createMsg"></p>
+                </div>
+
+                <!-- Networks list -->
+                <div id="adminNetworkList" class="admin-list">
+                    <div class="ch-loading"><div class="ch-loading-icon"></div></div>
+                </div>
+            </div>
+
+            <!-- ── Users Section ─────────────────────────────────────────── -->
+            <div id="section-users" class="admin-section-content" style="display:none;">
+                <div class="admin-section-header">
+                    <h3>User Role Directory</h3>
+                </div>
+                <p class="ch-page-sub" style="margin-bottom:24px;">
+                    Users entered here will have system-wide admin privileges. You can also assign Admins directly to specific networks or sub-channels in the <strong>Manage Networks</strong> tab.
+                </p>
+
+                <div class="admin-form-card">
+                    <h4 class="admin-form-title">Promote User to Admin</h4>
+                    <input type="email" id="promoteEmail" class="field" placeholder="Institution email (e.g. prof.sharma@uni.edu)">
+                    <div class="admin-form-actions">
+                        <button class="btn btn-admin" id="promoteBtn">Promote to Admin</button>
+                    </div>
+                    <p class="admin-form-msg" id="promoteMsg"></p>
+                </div>
+
+                <div class="admin-form-card" style="margin-top:16px;">
+                    <h4 class="admin-form-title">Demote User</h4>
+                    <input type="email" id="demoteEmail" class="field" placeholder="Institution email">
+                    <div class="admin-form-actions">
+                        <button class="btn btn-secondary" id="demoteBtn">Demote to User</button>
+                    </div>
+                    <p class="admin-form-msg" id="demoteMsg"></p>
+                </div>
+            </div>
+
+        </section>
+    </div>
+
+    <!-- ── Add Sub-Network Modal ─────────────────────────────────────────── -->
+    <div id="addSubModal" class="modal-overlay" style="display:none;">
+        <div class="modal-card">
+            <h3 class="modal-title">Add Sub-Network</h3>
+            <p class="modal-sub" id="addSubParentName"></p>
+            <input type="text" id="subNetworkName" class="field" placeholder="Sub-network name (e.g. Prof. Sharma — DS)" maxlength="100">
+            <input type="text" id="subNetworkDesc" class="field" placeholder="Description (optional)" maxlength="500">
+            <div class="admin-form-actions">
+                <button class="btn btn-admin" id="addSubBtn">Add Sub-Network</button>
+                <button class="btn-ghost" id="cancelSubBtn">Cancel</button>
+            </div>
+            <p class="admin-form-msg" id="addSubMsg"></p>
+        </div>
+    </div>
+
+    <!-- ── Manage Admins Modal ───────────────────────────────────────────── -->
+    <div id="manageAdminsModal" class="modal-overlay" style="display:none;">
+        <div class="modal-card modal-card-wide">
+            <h3 class="modal-title" id="adminModalTitle">Manage Admins</h3>
+            <p class="modal-sub" id="adminModalSub"></p>
+            
+            <div class="admin-input-group">
+                <input type="email" id="newAdminEmail" class="field" placeholder="Institution email (e.g. prof.sharma@uni.edu)">
+                <button class="btn btn-admin" id="saveAdminBtn">Add Admin</button>
+            </div>
+            <p class="admin-form-msg" id="adminModalMsg"></p>
+
+            <div class="admin-user-list-title">Current Admins</div>
+            <div id="currentAdminsList" class="admin-user-list">
+                <!-- populated by JS -->
+            </div>
+
+            <div style="margin-top: 18px; text-align: center;">
+                <button class="btn-ghost" id="closeAdminModalBtn">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/app.js"></script>
+    <script>initAdminDashboard();</script>
+</body>
+</html>

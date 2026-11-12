@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampiFi</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="brand-header">
+            <h1>CampiFi</h1>
+            <p class="subtitle">Campus network chat</p>
+        </div>
+
+        <!-- ── Connect View ─────────────────────────────────────────── -->
+        <div id="connectView" class="view-panel active">
+            <h2 class="view-title">Connect</h2>
+            <form id="loginForm">
+                <input type="email" id="loginEmail" class="field" placeholder="Institution email" required autocomplete="email">
+                <button type="submit" class="btn btn-secondary">Connect to CampiFi</button>
+            </form>
+        </div>
+
+        <div id="errorMessage" class="error-message" style="display: none;"></div>
+    </div>
+
+    <script src="/app.js"></script>
+    <script>initHomepage();</script>
+</body>
+</html>

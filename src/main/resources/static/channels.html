@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampiFi — Networks</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+    <!-- ── Top bar ──────────────────────────────────────────────────────── -->
+    <nav class="ch-topbar">
+        <span class="brand-small">CampiFi</span>
+        <div class="ch-topbar-right">
+            <span class="user-badge" id="userBadge"></span>
+            <span class="role-badge" id="roleBadge"></span>
+            <button class="logout-btn" id="logoutBtn">Logout</button>
+        </div>
+    </nav>
+
+    <!-- ── Network grid view ────────────────────────────────────────────── -->
+    <main class="ch-main" id="networkView">
+        <div class="ch-page-header">
+            <h2 class="ch-page-title">Networks</h2>
+            <p class="ch-page-sub">Select a network to join</p>
+        </div>
+        <div id="networkGrid" class="network-grid">
+            <!-- cards injected by JS -->
+            <div class="ch-loading">
+                <div class="ch-loading-icon"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ── Sub-network list (shown after joining a network) ─────────────── -->
+    <main class="ch-main" id="subNetworkView" style="display:none;">
+        <div class="sub-panel-header">
+            <button class="back-btn" id="subPanelBackBtn">&#8592; Back to Networks</button>
+        </div>
+        <div class="ch-page-header">
+            <h2 class="ch-page-title" id="subPanelTitle"></h2>
+            <p class="ch-page-sub" id="subPanelSub">Select a sub-network to open chat</p>
+        </div>
+        <div id="subNetworkList" class="sub-list"></div>
+    </main>
+
+    <!-- ── PIN Entry Modal ───────────────────────────────────────────────── -->
+    <div id="pinModal" class="modal-overlay" style="display:none;">
+        <div class="modal-card">
+            <h3 class="modal-title" id="pinModalTitle">Private Network</h3>
+            <p class="modal-sub" id="pinModalSub">Enter the 4-digit PIN to join</p>
+
+            <div class="otp-boxes" id="pinBoxes">
+                <input type="text" maxlength="1" class="otp-box" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+                <input type="text" maxlength="1" class="otp-box" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+                <input type="text" maxlength="1" class="otp-box" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+                <input type="text" maxlength="1" class="otp-box" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+            </div>
+
+            <div id="pinError" class="pin-error" style="display:none;"></div>
+
+            <button class="btn btn-admin" id="pinSubmitBtn">Enter Network</button>
+            <button class="btn-ghost" id="pinCancelBtn">Cancel</button>
+        </div>
+    </div>
+
+    <script src="/app.js"></script>
+    <script>initChannelsPage();</script>
+</body>
+</html>
